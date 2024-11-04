@@ -23,7 +23,7 @@ export const startSession = mutation(async (ctx) => {
     active: true,
   });
 
-  return { sessionId, expirationTime };
+  return { sessionId, userId, expirationTime };
 });
 
 // Function to check if session is active

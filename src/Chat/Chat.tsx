@@ -1,53 +1,69 @@
-"use client";
+import { useState } from 'react';
+import { useQuery, useMutation , useAction } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useMutation, useQuery } from "convex/react";
-import { FormEvent, useState } from "react";
-import { api } from "../../convex/_generated/api";
-import { MessageList } from "@/Chat/MessageList";
-import { Message } from "@/Chat/Message";
-import { Id } from "../../convex/_generated/dataModel";
+export function Chat({ sessionId , userId }: { sessionId: string, userId: string }) {
+  const [question, setQuestion] = useState('');
+  const [loading, setLoading] = useState(false);
 
-export function Chat({ viewer }: { viewer: Id<"users"> }) {
-  const [newMessageText, setNewMessageText] = useState("");
-  const messages = useQuery(api.messages.list);
-  const sendMessage = useMutation(api.messages.send);
+  // Fetch the chat history using useQuery
+  const chatHistory = useQuery(api.chatHistory.getChatHistory, { userId });
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  // Set up the mutation to submit a question
+  const generateAnswerAction = useAction(api.openai.generateAnswer);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setNewMessageText("");
-    sendMessage({ body: newMessageText }).catch((error) => {
-      console.error("Failed to send message:", error);
-    });
+    setLoading(true);
+
+
+    try {
+      // get the timestamp of the message
+      const timestamp = Date.now();
+      
+      console.log(question)
+      // Submit the question using the mutation
+      await generateAnswerAction({ sessionId, userId, question, timestamp });
+
+      // Clear the input field
+      setQuestion('');
+    } catch (error) {
+      console.error('Error submitting question:', error);
+      // Optionally, display an error message to the user
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // Handle loading state
+  if (chatHistory === undefined) {
+    return <div>Loading chat history...</div>;
+  }
+
   return (
-    <>
-      <MessageList messages={messages}>
-        {messages?.map((message) => (
-          <Message
-            key={message._id}
-            author={message.userId}
-            authorName={message.author}
-            viewer={viewer}
-          >
-            {message.body}
-          </Message>
+    <div>
+      <ul>
+        {chatHistory.map((entry, index) => (
+          <li key={index}>
+            <strong>Q:</strong> {entry.question}
+            <br />
+            <strong>A:</strong> {entry.answer}
+          </li>
         ))}
-      </MessageList>
-      <div className="border-t">
-        <form onSubmit={handleSubmit} className="container flex gap-2 py-4">
-          <Input
-            value={newMessageText}
-            onChange={(event) => setNewMessageText(event.target.value)}
-            placeholder="Write a message…"
-          />
-          <Button type="submit" disabled={newMessageText === ""}>
-            Send
-          </Button>
-        </form>
-      </div>
-    </>
+      </ul>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          placeholder="Ask a question about my resume..."
+          required
+          disabled={loading}
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Submitting...' : 'Submit'}
+        </button>
+      </form>
+    </div>
   );
 }
