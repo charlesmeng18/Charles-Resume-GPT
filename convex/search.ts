@@ -28,9 +28,10 @@ export const getRelevantChunks = action({
     async handler(ctx, args) {
         const embedding = await generateQueryEmbedding(args.question);
         console.log(embedding)
-        // const results = await ctx.db
-        //     .query("embeddings")
-        //     .filter((q) => q.eq(q.field("embedding"), embedding))
-        //     .collect();
+        const results = await ctx.vectorSearch("chunks", "byEmbedding", {
+            vector: embedding,
+            limit: 10
+        })
+        return results;
     }
 })    
