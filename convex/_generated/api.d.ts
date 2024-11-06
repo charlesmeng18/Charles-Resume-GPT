@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as auth from "../auth.js";
 import type * as chatHistory from "../chatHistory.js";
+import type * as documentProcessing_process from "../documentProcessing/process.js";
 import type * as http from "../http.js";
 import type * as openai from "../openai.js";
 import type * as search from "../search.js";
@@ -32,6 +33,7 @@ import type * as tasks from "../tasks.js";
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   chatHistory: typeof chatHistory;
+  "documentProcessing/process": typeof documentProcessing_process;
   http: typeof http;
   openai: typeof openai;
   search: typeof search;
