@@ -10,7 +10,6 @@ if (!apiKey) {
 }
 const openai = new OpenAI({ apiKey });
 
-
 export const generateAnswer = action({
   args: {
     sessionId: v.string(),
@@ -28,9 +27,9 @@ export const generateAnswer = action({
   console.log(context)
 
   // Fetch the most relevant chunks for generation
-  const results = await ctx.runQuery(api.search.getRelevantChunks, {
-    question: args.question
-  });
+  // const results = await ctx.runQuery(api.search.getRelevantChunks, {
+  //   question: args.question
+  // });
 
   // Create a prompt for the LLM
   const response = await openai.chat.completions.create({
@@ -69,3 +68,19 @@ export const generateAnswer = action({
   return answer
   }
 });
+
+export const generateQueryEmbedding = action({
+  args: {
+    question: v.string()
+  }, 
+  handler: async(ctx, args) => {
+    const response = await openai.embeddings.create({
+      model: "text-embedding-3-small",
+      input: args.question
+    });
+    const embedding = response.data[0].embedding;
+    console.log(args.question, embedding )
+    return embedding    
+}
+  }
+)

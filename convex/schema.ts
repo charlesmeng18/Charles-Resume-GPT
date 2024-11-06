@@ -1,6 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { authTables } from "@convex-dev/auth/server";
+import { title } from "process";
 
 // The schema is normally optional, but Convex Auth
 // requires indexes defined on `authTables`.
@@ -36,6 +37,22 @@ export default defineSchema({
   }),
   ...authTables,
   documents: defineTable({
-    
+    title: v.string(),
+    text: v.string(),
+    summary: v.string()
+  }),
+  chunks: defineTable({
+    documentId: v.string(),
+    chunkId: v.string(),
+    text: v.string(),
+    summary: v.string()
+  }),
+  embeddings: defineTable({
+    chunkId : v.string(),
+    embedding: v.array(v.float64()),
+  }).index("byChunkId", ["chunkId"])
+  .vectorIndex("byEmbedding", {
+    vectorField: "embedding",
+    dimensions: 1536,
   })
 });

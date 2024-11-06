@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery, useMutation , useAction } from 'convex/react';
+import { useQuery , useMutation, useAction } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 
 export function Chat({ sessionId , userId }: { sessionId: string, userId: string }) {
@@ -7,8 +7,7 @@ export function Chat({ sessionId , userId }: { sessionId: string, userId: string
   const [loading, setLoading] = useState(false);
 
   // Fetch the chat history using useQuery
-  const chatHistory = useQuery(api.chatHistory.getChatHistory, { userId });
-
+  const getChatHistory = useQuery(api.chatHistory.getChatHistory, { userId });
   // Set up the mutation to submit a question
   const generateAnswerAction = useAction(api.openai.generateAnswer);
 
@@ -33,17 +32,18 @@ export function Chat({ sessionId , userId }: { sessionId: string, userId: string
     } finally {
       setLoading(false);
     }
+    
   };
 
   // Handle loading state
-  if (chatHistory === undefined) {
+  if (getChatHistory === undefined) {
     return <div>Loading chat history...</div>;
   }
 
   return (
     <div>
       <ul>
-        {chatHistory.map((entry, index) => (
+        {getChatHistory.map((entry, index) => (
           <li key={index}>
             <strong>Q:</strong> {entry.question}
             <br />
