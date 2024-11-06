@@ -3,6 +3,10 @@ import { OpenAI } from "openai";
 import { v } from "convex/values";
 import { internal, api } from "./_generated/api";
 import { useQuery } from "convex/react";
+import { getAuthUserId } from "@convex-dev/auth/server";
+import { getAuthSessionId } from "@convex-dev/auth/server";
+
+
 
 const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
@@ -13,9 +17,9 @@ const openai = new OpenAI({ apiKey });
 export const generateAnswer = action({
   args: {
     sessionId: v.string(),
-    userId: v.string(),
+    timestamp: v.number(),
     question: v.string(),
-    timestamp: v.number()
+    userId: v.string()
   },
   handler: async(ctx, args) => {
 
@@ -27,9 +31,10 @@ export const generateAnswer = action({
   console.log(context)
 
   // Fetch the most relevant chunks for generation
-  // const results = await ctx.runQuery(api.search.getRelevantChunks, {
-  //   question: args.question
-  // });
+  const results = await ctx.runAction(api.search.embeddingsRetriever, {
+    question: args.question
+  });
+  const stringResults : string = JSON.stringify(results);
 
   // Create a prompt for the LLM
   const response = await openai.chat.completions.create({
@@ -37,12 +42,15 @@ export const generateAnswer = action({
     messages: [
       {
         role: "system",
-        content: `You are an AI assistant that provides accurate answers based on the provided context.`,
+        content: `You are an AI assistant that provides accurate answers based on the provided context. Here's the past context for reference ${context}`
       },
       {
         role: "user",
         content: `Question: ${args.question}`,
       },
+      {role: "system",
+        content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not provide information. Cite your sources.`
+      }
     ],
     temperature: 0,
     max_tokens: 600,
@@ -56,6 +64,9 @@ export const generateAnswer = action({
 
   console.log(answer)
 
+  const sessionId = await getAuthSessionId(ctx);
+  const userId = await getAuthUserId(ctx);
+  
   // Store the question and answer in chat history
   const data = await ctx.runMutation(api.chatHistory.addChatHistory, {
     sessionId: args.sessionId,
