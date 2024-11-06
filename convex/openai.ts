@@ -68,19 +68,3 @@ export const generateAnswer = action({
   return answer
   }
 });
-
-export const generateQueryEmbedding = action({
-  args: {
-    question: v.string()
-  }, 
-  handler: async(ctx, args) => {
-    const response = await openai.embeddings.create({
-      model: "text-embedding-3-small",
-      input: args.question
-    });
-    const embedding = response.data[0].embedding;
-    console.log(args.question, embedding )
-    return embedding    
-}
-  }
-)

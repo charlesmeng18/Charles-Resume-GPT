@@ -17,6 +17,7 @@ import type * as auth from "../auth.js";
 import type * as chatHistory from "../chatHistory.js";
 import type * as http from "../http.js";
 import type * as openai from "../openai.js";
+import type * as search from "../search.js";
 import type * as session from "../session.js";
 import type * as tasks from "../tasks.js";
 
@@ -33,6 +34,7 @@ declare const fullApi: ApiFromModules<{
   chatHistory: typeof chatHistory;
   http: typeof http;
   openai: typeof openai;
+  search: typeof search;
   session: typeof session;
   tasks: typeof tasks;
 }>;
