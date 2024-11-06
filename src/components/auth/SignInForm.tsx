@@ -14,7 +14,7 @@ export function SignInForm() {
     <form onSubmit={handleSubmit}>
       <label htmlFor="email">Email</label>
       <input name="email" id="email" type="email" required />
-      <button type="submit">Send Magic Link</button>
+      <button type="submit">Sign in Link</button>
     </form>
   );
 }

@@ -19,13 +19,26 @@ export const generateAnswer = action({
     timestamp: v.number()
   },
   handler: async(ctx, args) => {
-  
+
+  // Fetch the chat history
+  const chatHistory = await ctx.runQuery(api.chatHistory.getChatHistory, {
+    userId: args.userId
+  });
+  const context: string = JSON.stringify(chatHistory); // Assuming 'answer' is the relevant field
+  console.log(context)
+
+  // Fetch the most relevant chunks for generation
+  const results = await ctx.runQuery(api.search.getRelevantChunks, {
+    question: args.question
+  });
+
+  // Create a prompt for the LLM
   const response = await openai.chat.completions.create({
     model: "gpt-4o-mini", // Use "gpt-4" if you have access
     messages: [
       {
         role: "system",
-        content: "You are an AI assistant that provides accurate answers based on the provided context.",
+        content: `You are an AI assistant that provides accurate answers based on the provided context.`,
       },
       {
         role: "user",
@@ -33,7 +46,7 @@ export const generateAnswer = action({
       },
     ],
     temperature: 0,
-    max_tokens: 150,
+    max_tokens: 600,
   });
 
   if (!response.choices.length) {

@@ -35,4 +35,7 @@ export default defineSchema({
     lastReset: v.number(),       // Timestamp of the last rate limit reset
   }),
   ...authTables,
+  documents: defineTable({
+    
+  })
 });
