@@ -27,7 +27,8 @@ export default defineSchema({
     userId: v.string(),         // Reference to user ID
     question: v.string(),       // User's question
     answer: v.string(),         // Model's answer
-    timestamp: v.number(),      // Timestamp for each question-answer pair
+    timestamp: v.number(),      // Timestamp for each question-answer pair (in epoch)
+    prompt: v.optional(v.string()), // Prompt for the question
   }),
   rateLimits: defineTable({
     sessionId: v.string(),      // Reference to session ID
@@ -39,12 +40,13 @@ export default defineSchema({
   documents: defineTable({
     title: v.string(),
     text: v.string(),
-    summary: v.string()
+    lastModifiedDate: v.optional(v.string()),
+    summary: v.optional(v.string())
   }),
   chunks: defineTable({
     documentId: v.string(),
     text: v.string(),
-    summary: v.string(),
+    summary: v.optional(v.string()),
     embedding: v.array(v.float64())
   })
   .vectorIndex("byEmbedding", {

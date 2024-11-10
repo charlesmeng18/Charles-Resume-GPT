@@ -1,10 +1,10 @@
 import { v } from "convex/values";
-import { query, internalMutation } from "../_generated/server";
+import { query, internalMutation, mutation } from "./_generated/server";
 
 
 
 // This function takes the embeddings generated offline and loads them into the Chunks table
-export const loadChunks = internalMutation({
+export const loadChunk = mutation({
     args: {
       documentId: v.string(),
       text: v.string(),
@@ -20,12 +20,21 @@ export const loadChunks = internalMutation({
 
 
   // This function loads the document's title, summary, and text into the Documents table
-  export const loadDocument = internalMutation({
+  export const loadDocument = mutation({
     args: {
       title: v.string(),
       text: v.string(),
+      lastModifiedDate: v.optional(v.string())
     },
     handler: async (ctx, args) => { 
-        return "hello"  ;                  
+        const documentId = await ctx.db.insert("documents",
+            {
+                title: args.title,
+                text: args.text,
+                summary: "",
+                lastModifiedDate: args.lastModifiedDate
+            }
+        )
+        return documentId; // return the _id of the recently inserted document
     }
 });
