@@ -21,7 +21,8 @@ def main():
     nest_asyncio.apply()
 
     # Initialize LlamaParse parser
-    # llamaparse_key = os.getenv('LLAMA_CLOUD_API_KEY')  # Assumes you set your key as an env variable
+    llamaparse_key = os.getenv('LLAMA_CLOUD_API_KEY')  # Assumes you set your key as an env variable
+    
     parser = LlamaParse(
         api_key=llamaparse_key,
         result_type="markdown",  # "markdown" or "text"
@@ -50,11 +51,12 @@ def main():
         merged_doc = Document(text=combined_text, metadata=metadata)
         merged_documents.append(merged_doc)
     
-    # Initialize OpenAI Embedding model
+    # Embedding Model declaration
     embed_model = OpenAIEmbedding(model="text-embedding-3-small")
     
-    # Split documents into nodes for embedding generation
-    text_splitter = SentenceSplitter(chunk_size=500, chunk_overlap=50)
+    # Chunking Logic implementation
+    # text_splitter = SentenceSplitter(chunk_size=500, chunk_overlap=50)
+    text_splitter = SemanticSplitterNodeParser(buffer_size=1, breakpoint_percentile_threshold=95, embed_model=embed_model)
 
     # Process all documents
     for doc in tqdm(merged_documents, desc="Processing Documents"):
