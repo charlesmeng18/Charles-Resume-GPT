@@ -1,29 +1,31 @@
-export * from "@langchain/community/utils/convex";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-import { internalAction } from "../_generated/server";
 import { v } from "convex/values";
+import { query, internalMutation } from "../_generated/server";
 
 
 
-export const chunkDocs = internalAction({
+// This function takes the embeddings generated offline and loads them into the Chunks table
+export const loadChunks = internalMutation({
     args: {
-      url: v.string(),
+      documentId: v.string(),
+      text: v.string(),
+      embedding: v.array(v.float64())
     },
-    handler: async (ctx, { url }) => {
-      const loader = new PDFLoader(url); // Load the PDF from the URL
-
-      const docs = await loader.load();
-      console.log(docs.length);
-
-      console.log(docs[0].pageContent.slice(0, 100));
-        console.log(docs[0].metadata);
-
-      const textSplitter = new RecursiveCharacterTextSplitter({
-        chunkSize: 1000,
-        chunkOverlap: 200,
-      });
-  
-      const splitDocs = await textSplitter.splitDocuments(docs);
-      return splitDocs;
-    },
+    // 
+    handler: async (ctx, args) => {
+        const chunks = await ctx.db.insert("chunks", 
+            {documentId: args.documentId, text: args.text, summary: "", embedding: args.embedding});
+        return chunks;
+    }
   });
+
+
+  // This function loads the document's title, summary, and text into the Documents table
+  export const loadDocument = internalMutation({
+    args: {
+      title: v.string(),
+      text: v.string(),
+    },
+    handler: async (ctx, args) => { 
+        return "hello"  ;                  
+    }
+});

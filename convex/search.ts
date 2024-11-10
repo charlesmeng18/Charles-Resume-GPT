@@ -54,7 +54,6 @@ export const embeddingsRetriever = action({
             { ids: results.map((chunk) => chunk._id)} 
         );
         const filteredChunks = chunks.map((chunk, index) => ({
-            summary: chunk.summary,
             text: chunk.text,
             score: results[index]._score // Assuming results and chunks are in the same order
         }));

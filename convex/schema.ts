@@ -43,11 +43,10 @@ export default defineSchema({
   }),
   chunks: defineTable({
     documentId: v.string(),
-    chunkId: v.string(),
     text: v.string(),
     summary: v.string(),
     embedding: v.array(v.float64())
-  }).index("byChunkId", ["chunkId"])
+  })
   .vectorIndex("byEmbedding", {
     vectorField: "embedding",
     dimensions: 1536,
