@@ -38,7 +38,7 @@ export const fetchResults = internalQuery({
   });
 
 // Main embeddingRetriever function
-export const embeddingsRetriever = action({
+export const chunkEmbeddingsRetriever = action({
     args: {
         question: v.string()
     },

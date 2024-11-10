@@ -31,7 +31,7 @@ export const generateAnswer = action({
     console.log(context)
 
     // Fetch the most relevant chunks for generation
-    const results = await ctx.runAction(api.search.embeddingsRetriever, {
+    const results = await ctx.runAction(api.search.chunkEmbeddingsRetriever, {
       question: args.question
     });
     const stringResults : string = JSON.stringify(results);
