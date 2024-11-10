@@ -37,7 +37,7 @@ export const fetchResults = internalQuery({
     },
   });
 
-
+// Main embeddingRetriever function
 export const embeddingsRetriever = action({
     args: {
         question: v.string()
