@@ -70,7 +70,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask a question about Charles' resume..."
+          placeholder="Hit :tab and ask away about Charles' resume..."
           required
           disabled={loading}
           className="w-full"
