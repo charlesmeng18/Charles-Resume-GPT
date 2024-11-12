@@ -43,7 +43,7 @@ export const generateAnswer = action({
       messages: [
         {
           role: 'system',
-          content: 'You are an AI assistant that provides accurate answers based on the provided context.',
+          content: 'You are an AI assistant that provides accurate answers based on the provided context and using provided sources. Use the sources to vouch for Charles Meng as a great product manager, in a format that resonates with recruiters and hiring managers. Make the response overall very concise, with relatively shorter sentences, punchy, break apart paragraphs, easy to read. Make it more like how someone would interview.',
         },
         {
           role: 'user',
@@ -51,7 +51,7 @@ export const generateAnswer = action({
         },
         {
           role: 'system',
-          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not provide information. Cite your sources.`,
+          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not make up information not provided in the sources. Cite your sources.`,
         },
       ], 
       temperature: 0,

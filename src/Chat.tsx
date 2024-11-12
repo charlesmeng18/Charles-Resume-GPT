@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { useQuery , useAction } from 'convex/react';
-import { api } from '../../convex/_generated/api';
+import { useQuery, useAction } from 'convex/react';
+import { api } from '../convex/_generated/api';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
+import { ChatMessageList } from '@/components/ui/chat/chat-message-list';
 
-export function Chat({ sessionId , userId }: { sessionId: string, userId: string }) {
+export function Chat({ sessionId, userId }: { sessionId: string, userId: string }) {
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,7 +23,7 @@ export function Chat({ sessionId , userId }: { sessionId: string, userId: string
     try {
       // get the timestamp of the message
       const timestamp = Date.now();
-      
+
       console.log(question)
       // Submit the question using the mutation
       await generateAnswerAction({ sessionId, userId, question, timestamp });
@@ -32,7 +36,7 @@ export function Chat({ sessionId , userId }: { sessionId: string, userId: string
     } finally {
       setLoading(false);
     }
-    
+
   };
 
   // Handle loading state
@@ -42,27 +46,38 @@ export function Chat({ sessionId , userId }: { sessionId: string, userId: string
 
   return (
     <div>
-      <ul>
+      <ChatMessageList>
         {getChatHistory.map((entry, index) => (
-          <li key={index}>
-            <strong>Q:</strong> {entry.question}
-            <br />
-            <strong>A:</strong> {entry.answer}
-          </li>
+          <div key={index} className="space-y-2">
+            <div className="flex justify-end">
+              <ChatBubble variant="sent">
+                <ChatBubbleMessage variant="sent">
+                  {entry.question}
+                </ChatBubbleMessage>
+              </ChatBubble>
+            </div>
+            <div className="flex justify-start">
+              <ChatBubble variant="received">
+                <ChatBubbleMessage variant="received">
+                  {entry.answer}
+                </ChatBubbleMessage>
+              </ChatBubble>
+            </div>
+          </div>
         ))}
-      </ul>
+      </ChatMessageList>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
+        <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask a question about my resume..."
+          placeholder="Ask a question about Charles' resume..."
           required
           disabled={loading}
+          className="w-full"
         />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Submitting...' : 'Submit'}
-        </button>
+        <Button type="submit" disabled={loading} className="w-full">
+          {loading ? 'Generating Answer...' : 'Ask'}
+        </Button>
       </form>
     </div>
   );

@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react";
-import { SignInForm } from "./components/auth/SignInForm";
-import { Chat } from "./Chat/Chat";
-import { SignOut } from "./components/auth/SignOutButton";
+import { SignInPage } from "./SignInPage";
+import { Chat } from "./Chat";
+import { SignOut } from "./SignOutButton";
+import { Card } from '@/components/ui/card';
+
 
 function App() {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -27,28 +29,25 @@ function App() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  console.log("User ID is ", {userId})
-  console.log("Session ID is ",  {sessionId})
+  console.log("User ID is ", { userId })
+  console.log("Session ID is ", { sessionId })
+
   return (
-    <>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Unauthenticated>
-        <div>
-          <h1>Welcome to Resume GPT</h1>
-          <SignInForm />
-        </div>
+        <Card>
+          <SignInPage title="Welcome to Charles' Interview Assistant" />
+        </Card>
       </Unauthenticated>
       <Authenticated>
-        <div className="App">
-          <h1>Welcome to Resume GPT</h1>
-          {sessionId ? (
-            <Chat sessionId={sessionId} userId={userId} />
-          ) : (
-            <div>Starting session...</div>
-          )}
+        <div className="w-full max-w-2xl p-6 bg-transparent rounded-lg mb-4">
+          {sessionId && userId && <Chat sessionId={sessionId} userId={userId} />}
+        </div>
+        <div className="absolute top-4 right-4">
           <SignOut />
         </div>
       </Authenticated>
-    </>
+    </div>
   );
 }
 
