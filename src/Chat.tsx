@@ -18,8 +18,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-
-
+    
     try {
       // get the timestamp of the message
       const timestamp = Date.now();
