@@ -2,10 +2,6 @@ import { action } from "./_generated/server";
 import { OpenAI } from "openai";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
-import { getAuthUserId } from "@convex-dev/auth/server";
-import { getAuthSessionId } from "@convex-dev/auth/server";
-
-
 
 const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
