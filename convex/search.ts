@@ -1,5 +1,5 @@
 // this document performs vector search on the chunks table
-import { action, internalQuery, query } from "./_generated/server";
+import { action, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 import { OpenAI } from "openai";
 import { internal } from "./_generated/api";

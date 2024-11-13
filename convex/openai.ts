@@ -1,8 +1,7 @@
 import { action } from "./_generated/server";
 import { OpenAI } from "openai";
 import { v } from "convex/values";
-import { internal, api } from "./_generated/api";
-import { useQuery } from "convex/react";
+import { api } from "./_generated/api";
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { getAuthSessionId } from "@convex-dev/auth/server";
 
@@ -65,12 +64,9 @@ export const generateAnswer = action({
     const answer = response.choices[0].message.content.trim();
 
     console.log(answer)
-
-    const sessionId = await getAuthSessionId(ctx);
-    const userId = await getAuthUserId(ctx);
     
     // Store the question and answer in chat history
-    const data = await ctx.runMutation(api.chatHistory.addChatHistory, {
+    await ctx.runMutation(api.chatHistory.addChatHistory, {
       sessionId: args.sessionId,
       userId: args.userId,
       question: args.question,
