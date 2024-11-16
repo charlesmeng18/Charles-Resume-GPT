@@ -10,7 +10,7 @@ export const { auth, signIn, signOut, store } = convexAuth({
       if (!redirectTo) {
         throw new Error("Invalid redirect URL");
       }
-      return process.env.SITE_URL || "";
+      return process.env.CONVEX_SITE_URL || "";
     }
   }
 });
