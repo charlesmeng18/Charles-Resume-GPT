@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
 import { ChatMessageList } from '@/components/ui/chat/chat-message-list';
+import ReactMarkdown from 'react-markdown';
+
 
 export function Chat({ sessionId, userId }: { sessionId: string, userId: string }) {
   const [question, setQuestion] = useState('');
@@ -58,7 +60,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
             <div className="flex justify-start">
               <ChatBubble variant="received">
                 <ChatBubbleMessage variant="received">
-                  {entry.answer}
+                  <ReactMarkdown>{entry.answer}</ReactMarkdown>
                 </ChatBubbleMessage>
               </ChatBubble>
             </div>

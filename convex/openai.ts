@@ -38,7 +38,7 @@ export const generateAnswer = action({
       messages: [
         {
           role: 'system',
-          content: 'You are an AI assistant that provides accurate answers based on the provided context and using provided sources. Use the sources to vouch for Charles Meng as a great product manager. Use succinct descriptions to summarize the information. ',
+          content: 'You are an AI assistant that provides accurate answers based on the provided context and using provided sources. Use the sources to vouch for Charles Meng as a great product manager. Use succinct descriptions to summarize the information.',
         },
         {
           role: 'user',
@@ -46,7 +46,7 @@ export const generateAnswer = action({
         },
         {
           role: 'system',
-          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not make up information not provided in the sources. Cite your sources.`,
+          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not make up information not provided in the sources. Return your response in Markdown format, succinctly. Cite your sources.`,
         },
       ], 
       temperature: 0,
