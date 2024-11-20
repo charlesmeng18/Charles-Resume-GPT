@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useAction } from 'convex/react';
 import { api } from '../convex/_generated/api';
 import { Button } from '@/components/ui/button';
@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
 import { ChatMessageList } from '@/components/ui/chat/chat-message-list';
 import ReactMarkdown from 'react-markdown';
-
+import remarkGfm from 'remark-gfm';
 
 export function Chat({ sessionId, userId }: { sessionId: string, userId: string }) {
   const [question, setQuestion] = useState('');
@@ -60,7 +60,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
             <div className="flex justify-start">
               <ChatBubble variant="received">
                 <ChatBubbleMessage variant="received">
-                  <ReactMarkdown>{entry.answer}</ReactMarkdown>
+                  <CustomMarkdown content = {cleanUpText(entry.answer)} />
                 </ChatBubbleMessage>
               </ChatBubble>
             </div>
@@ -81,5 +81,32 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
         </Button>
       </form>
     </div>
+  );
+}
+
+function cleanUpText(input: string): string {
+  return input
+    .replace(/\r\n|\r|\n/g, '\n') // Normalize line endings
+    .replace(/\n{3,}/g, '\n\n')   // Limit consecutive newlines to two
+    .replace(/[ \t]{2,}/g, ' ')   // Collapse multiple spaces
+    .trim();                       // Trim whitespace
+}
+
+interface CustomMarkdown {
+  children: string;
+}
+function CustomMarkdown({ content }: { content: string }): JSX.Element {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        h1: ({ node, ...props }) => <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }} {...props} />,
+        h2: ({ node, ...props }) => <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold' }} {...props} />,
+        h3: ({ node, ...props }) => <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }} {...props} />,
+        p: ({ node, ...props }) => <p style={{ marginBottom: '1rem', lineHeight: '1.6' }} {...props} />,
+      }}
+    >
+      {content}
+    </ReactMarkdown>
   );
 }

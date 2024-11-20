@@ -46,7 +46,7 @@ export const generateAnswer = action({
         },
         {
           role: 'system',
-          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not make up information not provided in the sources. Return your response in Markdown format, succinctly. Cite your sources.`,
+          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not make up information not provided in the sources. Return your response in Markdown format, with various headings, e.g. H2s, H3s, and boldfaced to make the response more readable. Be succinct, your answer should be no more than a few concise paragraphs. Cite your sources.`,
         },
       ], 
       temperature: 0,
@@ -73,3 +73,5 @@ export const generateAnswer = action({
   return answer
   }
 });
+
+
