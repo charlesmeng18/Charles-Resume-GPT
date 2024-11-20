@@ -1,9 +1,13 @@
-import GitHub from "@auth/core/providers/github";
 import Resend from "@auth/core/providers/resend";
 import { convexAuth } from "@convex-dev/auth/server";
 
 export const { auth, signIn, signOut, store } = convexAuth({
-  providers: [GitHub, Resend],
+  providers: [
+    Resend({
+      apiKey: process.env.RESEND_API_KEY,
+      from: "no-reply@charlesmeng.xyz",
+    })
+  ],
   callbacks: {
     async redirect({redirectTo}) {
       // check if redirectTo is valid
