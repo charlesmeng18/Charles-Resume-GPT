@@ -86,10 +86,10 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
 
 function cleanUpText(input: string): string {
   return input
-    .replace(/\r\n|\r|\n/g, '\n') // Normalize line endings
-    .replace(/\n{3,}/g, '\n\n')   // Limit consecutive newlines to two
-    .replace(/[ \t]{2,}/g, ' ')   // Collapse multiple spaces
-    .trim();                       // Trim whitespace
+    .replace(/\r\n|\r|\n/g, '\n') // Normalize line endings to '\n'
+    .replace(/\n{2,}/g, '\n') // Remove consecutive line breaks
+    .replace(/[ \t]{2,}/g, ' ') // Collapse multiple spaces
+    .trim(); // Trim whitespace
 }
 
 interface CustomMarkdown {
@@ -100,10 +100,18 @@ function CustomMarkdown({ content }: { content: string }): JSX.Element {
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
-        h1: ({ node, ...props }) => <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }} {...props} />,
-        h2: ({ node, ...props }) => <h2 style={{ fontSize: '1.75rem', fontWeight: 'bold' }} {...props} />,
-        h3: ({ node, ...props }) => <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }} {...props} />,
-        p: ({ node, ...props }) => <p style={{ marginBottom: '1rem', lineHeight: '1.6' }} {...props} />,
+        h1: ({ node, ...props }) => (
+          <h1 style={{ fontSize: '1.5rem', fontWeight: '650', marginBottom: '0.5rem' }} {...props} />
+        ),
+        h2: ({ node, ...props }) => (
+          <h2 style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '0.5rem' }} {...props} />
+        ),
+        h3: ({ node, ...props }) => (
+          <h3 style={{ fontSize: '1.1rem', fontWeight: '575', marginBottom: '0.5rem' }} {...props} />
+        ),
+        p: ({ node, ...props }) => (
+          <p style={{ marginBottom: '0.75rem', lineHeight: '1.5' }} {...props} />
+        ),
       }}
     >
       {content}
