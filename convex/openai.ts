@@ -2,6 +2,8 @@ import { action } from "./_generated/server";
 import { OpenAI } from "openai";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
+import { internal } from "./_generated/api";
+
 
 const apiKey = process.env.OPENAI_API_KEY;
 if (!apiKey) {
@@ -22,12 +24,20 @@ export const generateAnswer = action({
     const chatHistory = await ctx.runQuery(api.chatHistory.getChatHistory, {
       userId: args.userId
     });
+
     const context: string = JSON.stringify(chatHistory); // Assuming 'answer' is the relevant field
     console.log(context)
 
+    // Rewrite the query using the rewriting action
+    const rewrittenQuery = await ctx.runAction(internal.queryRewrite.queryRewrite, {
+      query: args.question,
+      userId: args.userId
+    });
+    console.log(rewrittenQuery)
+
     // Fetch the most relevant chunks for generation
     const results = await ctx.runAction(api.search.chunkEmbeddingsRetriever, {
-      question: args.question // retrieve using the question
+      question: rewrittenQuery // retrieve using the question
     });
     const stringResults : string = JSON.stringify(results);
 

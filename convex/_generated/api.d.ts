@@ -18,6 +18,7 @@ import type * as chatHistory from "../chatHistory.js";
 import type * as http from "../http.js";
 import type * as openai from "../openai.js";
 import type * as process from "../process.js";
+import type * as queryRewrite from "../queryRewrite.js";
 import type * as search from "../search.js";
 import type * as session from "../session.js";
 import type * as tasks from "../tasks.js";
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   openai: typeof openai;
   process: typeof process;
+  queryRewrite: typeof queryRewrite;
   search: typeof search;
   session: typeof session;
   tasks: typeof tasks;
