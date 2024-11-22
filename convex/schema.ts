@@ -51,5 +51,9 @@ export default defineSchema({
   .vectorIndex("byEmbedding", {
     vectorField: "embedding",
     dimensions: 1536,
+  }),
+  allowlist: defineTable({
+    email: v.string(),
+    isAllowed: v.boolean()
   })
 });

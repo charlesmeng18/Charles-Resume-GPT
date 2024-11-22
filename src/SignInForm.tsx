@@ -3,22 +3,45 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {Alert} from '@/components/ui/alert';
+import { useMutation } from 'convex/react';
+import { api } from '../convex/_generated/api';
 
 export function SignInForm() {
   const { signIn } = useAuthActions();
   const [loading, setLoading] = useState(false);
   const [confirmation, setConfirmation] = useState('');
+  const [error, setError] = useState('');
+
+  // Initialize the mutation for checking allowlist status
+  const checkAllowlistStatus = useMutation(api.allowlist.checkAllowlistStatus);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setConfirmation('');
+    setError('');
+
     const formData = new FormData(event.currentTarget);
+    const email = formData.get('email') as string;
+
     try {
+      // Check if the email is allowlisted
+      const isAllowlisted = await checkAllowlistStatus({ email: email });
+
+      if (!isAllowlisted) {
+        console.log(`${email} is not allowlisted`); 
+        setError(`${email} is not authorized to access this application. Please reach out to Charles to request allowlist access.`);
+        setLoading(false);
+        return;
+      }
+
+      // Proceed with sign-in if allowlisted
+      console.log(`${email} is allowlisted!`); 
       await signIn('resend', formData);
-      setConfirmation('A magic link has been sent to your email.');
-    } catch (error) {
-      setConfirmation('An error occurred. Please try again.');
+      setConfirmation('Allowlist access confirmed! Magic link has been sent to your email - use the link to log in.');
+    } catch (err) {
+      console.error(err);
+      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -45,6 +68,11 @@ export function SignInForm() {
       {confirmation && (
         <Alert className="mt-4">
           {confirmation}
+        </Alert>
+      )}
+        {error && (
+        <Alert className="mt-4" variant="default">
+          {error}
         </Alert>
       )}
     </div>

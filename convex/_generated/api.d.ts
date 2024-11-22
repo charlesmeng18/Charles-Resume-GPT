@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as allowlist from "../allowlist.js";
 import type * as auth from "../auth.js";
 import type * as chatHistory from "../chatHistory.js";
 import type * as http from "../http.js";
@@ -32,6 +33,7 @@ import type * as tasks from "../tasks.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  allowlist: typeof allowlist;
   auth: typeof auth;
   chatHistory: typeof chatHistory;
   http: typeof http;
