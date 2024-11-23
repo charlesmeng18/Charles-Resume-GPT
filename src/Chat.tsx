@@ -7,6 +7,7 @@ import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble'
 import { ChatMessageList } from '@/components/ui/chat/chat-message-list';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { WelcomeSection } from './WelcomeSection';
 
 export function Chat({ sessionId, userId }: { sessionId: string, userId: string }) {
   const [question, setQuestion] = useState('');
@@ -40,6 +41,25 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
 
   };
 
+  const handleQueryClick = async (queryText: string) => {
+    // Set the question first
+    setQuestion(queryText);
+    
+    // Create timestamp
+    const timestamp = Date.now();
+
+    setLoading(true);
+    try {
+      // Directly call generateAnswerAction instead of using handleSubmit
+      await generateAnswerAction({ sessionId, userId, question: queryText, timestamp });
+    } catch (error) {
+      console.error('Error submitting question:', error);
+    } finally {
+      setLoading(false);
+      setQuestion('');
+    }
+  };
+
   // Handle loading state
   if (getChatHistory === undefined) {
     return <div>Loading chat history...</div>;
@@ -47,25 +67,29 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
 
   return (
     <div>
-      <ChatMessageList>
-        {getChatHistory.map((entry, index) => (
-          <div key={index} className="space-y-2">
-            <div className="flex justify-end">
-              <ChatBubble variant="sent">
-                <ChatBubbleMessage variant="sent">
-                  {entry.question}
-                </ChatBubbleMessage>
-              </ChatBubble>
+            <ChatMessageList>
+        {getChatHistory.length === 0 ? (
+          <WelcomeSection onQueryClick={handleQueryClick} />
+        ) : (
+          getChatHistory.map((entry, index) => (
+            <div key={index} className="space-y-2">
+              <div className="flex justify-end">
+                <ChatBubble variant="sent">
+                  <ChatBubbleMessage variant="sent">
+                    {entry.question}
+                  </ChatBubbleMessage>
+                </ChatBubble>
+              </div>
+              <div className="flex justify-start">
+                <ChatBubble variant="received">
+                  <ChatBubbleMessage variant="received">
+                    <CustomMarkdown content={cleanUpText(entry.answer)} />
+                  </ChatBubbleMessage>
+                </ChatBubble>
+              </div>
             </div>
-            <div className="flex justify-start">
-              <ChatBubble variant="received">
-                <ChatBubbleMessage variant="received">
-                  <CustomMarkdown content = {cleanUpText(entry.answer)} />
-                </ChatBubbleMessage>
-              </ChatBubble>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </ChatMessageList>
       <form onSubmit={handleSubmit}>
         <Input
