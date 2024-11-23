@@ -19,17 +19,9 @@ export const generateAnswer = action({
     userId: v.string()
   },
   handler: async(ctx, args) => {
-
-    // Fetch the chat history
-    const chatHistory = await ctx.runQuery(api.chatHistory.getChatHistory, {
-      userId: args.userId
-    });
-
-    const context: string = JSON.stringify(chatHistory); // Assuming 'answer' is the relevant field
-    console.log(context)
-
+    
     // Rewrite the query using the rewriting action
-    const rewrittenQuery = await ctx.runAction(internal.queryRewrite.queryRewrite, {
+    const rewrittenQuery : string = await ctx.runAction(internal.queryRewrite.queryRewrite, {
       query: args.question,
       userId: args.userId
     });
@@ -48,19 +40,21 @@ export const generateAnswer = action({
       messages: [
         {
           role: 'system',
-          content: 'You are an AI assistant that provides accurate answers based on the provided context and using provided sources. Use the sources to vouch for Charles Meng as a great product manager. Use succinct descriptions to summarize the information.',
+          content: `You are an AI assistant that provides accurate, concise answers about Charles Meng's professional background. 
+            Focus on answering the user's question using only the provided source material.
+            Format your responses in Markdown with clear headings and structure.`,
         },
         {
           role: 'user',
-          content: `Question: ${args.question}`,
+          content: `Question: ${rewrittenQuery}`,
         },
         {
           role: 'system',
-          content: `To answer the previous user question ${args.question}, use these results: ${stringResults}. Do not make up information not provided in the sources. Return your response in Markdown format, with various headings, e.g. H2s, H3s, and boldfaced to make the response more readable. Be succinct, your answer should be no more than a few concise paragraphs. Cite your sources.`,
+          content: `To answer the previous user question, User: ${rewrittenQuery}, use these results: ${stringResults}. Do not make up information not provided in the sources. Return your response in Markdown format, with various headings, e.g. H2s, H3s, and boldfaced to make the response more readable. Be succinct, your answer should be no more than a few concise paragraphs. Cite your sources.`,
         },
       ], 
       temperature: 0,
-      max_tokens: 600,
+      max_tokens: 400,
     });
 
     if (!response.choices.length) {
