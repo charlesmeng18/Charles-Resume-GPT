@@ -10,10 +10,6 @@ export default defineSchema({
     text: v.string(),
     isCompleted: v.boolean(),
   }),
-  allowListedUsers: defineTable({
-    userEmail: v.string(),
-    allowlisted: v.boolean(), // Whether the user is allowed access
-  }),
   sessions: defineTable({
     sessionId: v.string(),
     userId: v.string(),        // Reference to the user ID
