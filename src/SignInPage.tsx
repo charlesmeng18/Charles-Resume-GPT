@@ -1,17 +1,14 @@
-import { Card, CardHeader } from '@/components/ui/card';
 import { SignInForm } from './SignInForm';
 
-interface HeaderProps {
-  title: string;
-}
 
-export function SignInPage({ title }: HeaderProps) {
+export function SignInPage() {
   return (
-    <Card className="w-full max-w-lg p-6 bg-white rounded-lg border-none">
-        <CardHeader className="text-center bg-white">
-            <h1 className="text-3xl font-bold">{title}</h1>
-        </CardHeader>
-        <SignInForm />
-  </Card>
+    <div className="w-full text-center">
+      <h1 className="text-4xl font-bold mb-4">Welcome to Charles' Resume Assistant</h1>
+      <p className="text-xl text-muted-foreground mb-6">
+        An intelligent AI assistant powered by advanced RAG technology
+      </p>
+      <SignInForm />
+    </div>
   );
 }

@@ -2,11 +2,9 @@ import { useState, useEffect } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../convex/_generated/api";
 import { Authenticated, Unauthenticated, useConvexAuth } from "convex/react";
-import { SignInPage } from "./SignInPage";
 import { Chat } from "./Chat";
 import { SignOut } from "./SignOutButton";
-import { Card } from '@/components/ui/card';
-
+import {LandingPage} from './LandingPage'
 
 function App() {
   const { isAuthenticated, isLoading } = useConvexAuth();
@@ -35,9 +33,7 @@ function App() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <Unauthenticated>
-        <Card>
-          <SignInPage title="Welcome to Charles' Resume Assistant" />
-        </Card>
+          <LandingPage />
       </Unauthenticated>
       <Authenticated>
         <div className="w-full max-w-6xl p-6 bg-transparent rounded-lg mb-4">

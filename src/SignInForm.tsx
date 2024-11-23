@@ -62,7 +62,7 @@ export function SignInForm() {
           className="w-full"
         />
         <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Sending...' : 'Send Magic Link'}
+          {loading ? 'Sending...' : 'Sign In with Magic Link'}
         </Button>
       </form>
       {confirmation && (
