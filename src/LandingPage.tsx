@@ -5,6 +5,16 @@ import { SignInPage } from "./SignInPage";
 export function LandingPage() {
   const techStack = [
     {
+        title: "Search Processing and Infra",
+        description: "High-performance vector similarity search powered by Convex's vector database",
+        badges: [ "Content Processing: LlamaParse + LlamaIndex", "Search DB: Convex DB",] 
+    },
+    {
+          title: "Search Relevance and Retrieval Augmented Generation",
+          description: "Leveraging state-of-the-art retrieval augmented generation with query rewriting and hybrid search capabilities",
+          badges: [ "Retrieval: Vector Search + Lexical Search", "Embeddings: text-embedding-3-small", "Ranking: Jina Reranker V2", "LLM: GPT-4o", "Query Rewritting: GPT-3.5 turbo"] 
+    },
+    {
         title: "React Frontend Stack",
         description: "Built with React and styled with ShadcnUI for a responsive and beautiful user experience",
         badges: ["React", "TypeScript", "ShadcnUI", "TailwindCSS"]
@@ -12,18 +22,8 @@ export function LandingPage() {
       {
         title: "Serverless Backend",
         description: "Fully serverless architecture with real-time capabilities and built-in authentication",
-        badges: ["Convex Backend", "Real-time Updates", "Convex Auth"]
-      },
-    {
-    title: "Vector Search Infrastructure",
-    description: "High-performance vector similarity search powered by Convex's vector database",
-    badges: ["Convex DB", "Vector Search", "Chunk Management"]
-    },
-    {
-      title: "Advanced RAG Pipeline",
-      description: "Leveraging state-of-the-art retrieval augmented generation with query rewriting and hybrid search capabilities",
-      badges: ["GPT-4", "text-embedding-3-small", "Hybrid Search", "Query Rewriting"]
-    }
+        badges: ["Convex Backend", "Convex Auth"]
+      }
   ];
 
   return (
@@ -39,7 +39,7 @@ export function LandingPage() {
           <div className="w-full border-t border-muted"></div>
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">This app is coded by Charles powered by the following tools:</span>
+          <span className="bg-background px-2 text-muted-foreground">This app is created using the following tools:</span>
         </div>
       </div>
 

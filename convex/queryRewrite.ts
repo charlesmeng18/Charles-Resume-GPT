@@ -51,7 +51,8 @@ export const queryRewrite = internalAction({
 
         // @ts-ignore: Object is possibly 'null'.
         const answer = response.choices[0].message.content.trim();
-
+        console.log(`The rewritte query is ${answer}`);
+        
         // Return the rewritten query, falling back to original if something goes wrong
         return answer;
         } catch (error) {

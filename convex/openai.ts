@@ -50,15 +50,15 @@ export const generateAnswer = action({
         },
         {
           role: 'system',
-          content: `To answer the previous user question, User: ${rewrittenQuery}, use these results: ${stringResults}. 
+          content: `To answer the previous user's  question ${rewrittenQuery}, you can use these results: ${stringResults}. If the results do not answer the user's question, gracefully bow out.
           Do not make up information not provided in the sources. 
-          Return your response in Markdown format, with various headings, e.g. H2s, H3s, and boldfaced to make the response more readable. 
+          Return your response in Markdown format to make the response more readable. 
           Be succinct, your answer should be no more than a few concise paragraphs. 
           Cite your sources.`,
         },
       ], 
       temperature: 0,
-      max_tokens: 400,
+      max_tokens: 300,
     });
 
     if (!response.choices.length) {

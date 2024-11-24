@@ -67,7 +67,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
 
   return (
     <div>
-            <ChatMessageList>
+        <ChatMessageList>
         {getChatHistory.length === 0 ? (
           <WelcomeSection onQueryClick={handleQueryClick} />
         ) : (
