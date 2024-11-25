@@ -46,7 +46,7 @@ export const chunkEmbeddingsRetriever = action({
         const embedding = await generateQueryEmbedding(args.question);        // perform vector search on the chunks table
         const results = await ctx.vectorSearch("chunks", "byEmbedding", {
             vector: embedding,
-            limit: 10
+            limit: 20
         });
         // fetch the document data for each result
         const chunks : Array<Doc<"chunks">> = await ctx.runQuery(
@@ -59,4 +59,7 @@ export const chunkEmbeddingsRetriever = action({
         }));
         return filteredChunks; // return the filtered chunks with scores
     }
-})    
+})   
+
+
+
