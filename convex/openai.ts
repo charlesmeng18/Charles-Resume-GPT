@@ -25,7 +25,6 @@ export const generateAnswer = action({
       query: args.question,
       userId: args.userId
     });
-    console.log(rewrittenQuery)
 
     // Fetch the most relevant chunks for generation
     const results = await ctx.runAction(api.search.chunkEmbeddingsRetriever, {

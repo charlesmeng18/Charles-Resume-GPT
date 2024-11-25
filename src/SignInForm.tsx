@@ -50,8 +50,8 @@ export function SignInForm() {
   return (
     <div className="max-w-md mx-auto p-4 border rounded-lg shadow-md">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
+        <label htmlFor="email" className="block text-m font-medium text-black-700">
+          Enter your email here:
         </label>
         <Input
           name="email"

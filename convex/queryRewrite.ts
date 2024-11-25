@@ -50,11 +50,11 @@ export const queryRewrite = internalAction({
         }
 
         // @ts-ignore: Object is possibly 'null'.
-        const answer = response.choices[0].message.content.trim();
-        console.log(`The rewritte query is ${answer}`);
-        
+        const rewrittenQuery = response.choices[0].message.content.trim();
+        console.log(`The rewritten query is ${rewrittenQuery}`);
+
         // Return the rewritten query, falling back to original if something goes wrong
-        return answer;
+        return rewrittenQuery;
         } catch (error) {
         console.error("Error rewriting query:", error);
         return args.query; // Fall back to original query if rewriting fails

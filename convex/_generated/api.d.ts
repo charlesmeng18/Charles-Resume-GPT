@@ -16,6 +16,7 @@ import type {
 import type * as allowlist from "../allowlist.js";
 import type * as auth from "../auth.js";
 import type * as chatHistory from "../chatHistory.js";
+import type * as followUpQuestions from "../followUpQuestions.js";
 import type * as http from "../http.js";
 import type * as openai from "../openai.js";
 import type * as process from "../process.js";
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   allowlist: typeof allowlist;
   auth: typeof auth;
   chatHistory: typeof chatHistory;
+  followUpQuestions: typeof followUpQuestions;
   http: typeof http;
   openai: typeof openai;
   process: typeof process;
