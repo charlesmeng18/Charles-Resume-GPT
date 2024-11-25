@@ -37,7 +37,7 @@ export const FollowUpQuestions: React.FC<FollowUpQuestionsProps> = ({
   }
 
   return (
-    <div className="mt-4 mb-8">
+    <div className="mt-4 mb-8" w-full max-w-md>
       <h3 className="text-lg font-semibold">Follow-Up Questions</h3>
       <div className="flex flex-col items-start">
         {followUpQuestions.map((question, index) => (

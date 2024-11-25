@@ -58,7 +58,7 @@ export const generateFollowUps = action({
         }
       ],
       temperature: 0.5,
-      max_tokens: 50,
+      max_tokens: 75,
     });
 
     if (!response.choices[0].message.content) {
