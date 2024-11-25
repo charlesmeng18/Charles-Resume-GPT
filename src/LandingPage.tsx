@@ -7,7 +7,7 @@ export function LandingPage() {
     {
         title: "Search Relevance and RAG (Retrieval Augmented Generation)",
         description: "ChatGPT-like experience, with search optimizations including query rewriting, hybrid search, and reranking",
-        badges: [ "Retrieval: Vector Search + Lexical Search", "Embeddings: text-embedding-3-small", "Ranking: Jina Reranker V2", "Chat Generation LLM: GPT-4o", "Query Rewrites: GPT-3.5 turbo"] 
+        badges: ["Chat Generation LLM: GPT-4o", "Search: Vector + Lexical Retrieval", "Embeddings: text-embedding-3-small", "Ranking: Jina Reranker V2", "Query Rewrites: GPT-3.5 turbo"] 
     },
     {
         title: "Data Processing and Search Infra",

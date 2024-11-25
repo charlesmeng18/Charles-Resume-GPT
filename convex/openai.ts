@@ -41,7 +41,7 @@ export const generateAnswer = action({
           role: 'system',
           content: `You are an AI assistant that provides accurate, concise answers about Charles Meng's professional background. 
             Focus on answering the user's question using only the provided source material.
-            Format your responses in Markdown with clear headings and structure.`,
+            Sparingly use some headers and bullet points to structure your response.`,
         },
         {
           role: 'user',
@@ -50,8 +50,7 @@ export const generateAnswer = action({
         {
           role: 'system',
           content: `To answer the previous user's  question ${rewrittenQuery}, you can use these results: ${stringResults}. If the results do not answer the user's question, gracefully bow out.
-          Do not make up information not provided in the sources. 
-          Return your response in Markdown format to make the response more readable. 
+          Do not make up information not provided in the sources.  
           Be succinct, your answer should be no more than a few concise paragraphs. 
           Cite your sources.`,
         },

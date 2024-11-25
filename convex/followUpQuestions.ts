@@ -12,8 +12,6 @@ const openai = new OpenAI({ apiKey });
 export const generateFollowUps = action({
   args: {
     userId: v.string(),
-    currentQuestion: v.string(),
-    currentAnswer: v.string(),
   },
   handler: async (ctx, args): Promise<string[]> => {
     // Fetch recent chat history
@@ -21,16 +19,18 @@ export const generateFollowUps = action({
       userId: args.userId,
     });
 
+    // Assuming the last entry in chatHistory contains the current question and answer
+    const lastEntry = chatHistory[chatHistory.length - 1];
+    const currentQuestion = lastEntry.question; // Adjust based on your data structure
+    const currentAnswer = lastEntry.answer; // Adjust based on your data structure
+
     const winningTopics = `
     - Apple: If questions about Apple: 
-        - Expertise and experience with data intensive applications, data analysis at scale, search, 0-1, general Product Management experience 
-        - General Product Management experience and learnings
+        - Expertise with data intensive applications, data analysis at scale, search, 0-1, general Product Management experience 
+        - General Product Management at scale and big tech
     - Moveworks: If questions about Moveworks:
-        - 0 to 1 Product ownership and experience as Lead of Enteprise Search
-        - Expertise and experience with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation)
-    - Other: If questions about other topics:
-        - General Product Management experience and learnings
-        - Expertise and experience with data intensive applications, data analysis at scale, search, 0-1, general Product Management experience
+        - 0 to 1 Product experience
+        - Expertise with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation)
     `
       ;
 
@@ -39,23 +39,26 @@ export const generateFollowUps = action({
       messages: [
         {
           role: "system",
-          content: `Generate 3 natural follow-up questions based on the user's current question and the chat history. 
-            Prioritize questions about these key topics: ${winningTopics}
-            Make the questions you generate very very concise. 
-            Make questions you generate very casual. 
+          content: `Generate 2 complete, natural follow-up questions based on the user's current question and the chat history. 
+            Prioritize questions about these key topics: ${winningTopics}.
+            Here are principles you are expected to follow:
+            The follow-up questions should be very concise. Short sentences only, such as: 
+                "What does Moveworks do?" 
+                "What are Charles' best skills?"
+                "What are Charles' key challenges overcome"
             Return only the questions, separated by |.
             Questions should build on previous context but also explore new relevant areas.`
         },
         {
           role: "user",
-          content: `Current question: ${args.currentQuestion}
-            Current answer: ${args.currentAnswer}
+          content: `Current question: ${currentQuestion}
+            Current answer: ${currentAnswer}
             Recent chat history: ${JSON.stringify(chatHistory.slice(-3))}
-            Generate 3 follow-up questions.`
+            Generate 2 follow-up questions.`
         }
       ],
-      temperature: 0.7,
-      max_tokens: 150,
+      temperature: 0.5,
+      max_tokens: 50,
     });
 
     if (!response.choices[0].message.content) {

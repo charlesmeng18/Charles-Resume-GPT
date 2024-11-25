@@ -8,6 +8,7 @@ import { ChatMessageList } from '@/components/ui/chat/chat-message-list';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { WelcomeSection } from './WelcomeSection';
+import { FollowUpQuestions } from './FollowUpQuestions';
 
 export function Chat({ sessionId, userId }: { sessionId: string, userId: string }) {
   const [question, setQuestion] = useState('');
@@ -42,15 +43,15 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
   };
 
   const handleQueryClick = async (queryText: string) => {
-    // Set the question first
+    // Set the question
     setQuestion(queryText);
-    
+  
     // Create timestamp
     const timestamp = Date.now();
-
+  
     setLoading(true);
     try {
-      // Directly call generateAnswerAction instead of using handleSubmit
+      // Call generateAnswerAction
       await generateAnswerAction({ sessionId, userId, question: queryText, timestamp });
     } catch (error) {
       console.error('Error submitting question:', error);
@@ -58,7 +59,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
       setLoading(false);
       setQuestion('');
     }
-  };
+  };  
 
   // Handle loading state
   if (getChatHistory === undefined) {
@@ -67,22 +68,23 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
 
   return (
     <div>
-        <ChatMessageList>
+      <ChatMessageList>
         {getChatHistory.length === 0 ? (
-          <WelcomeSection onQueryClick={handleQueryClick} />
+          <WelcomeSection onQueryClick={handleQueryClick} loading={loading} />
         ) : (
           getChatHistory.map((entry, index) => (
             <div key={index} className="space-y-2">
               <div className="flex justify-end">
                 <ChatBubble variant="sent">
-                  <ChatBubbleMessage variant="sent">
-                    {entry.question}
-                  </ChatBubbleMessage>
+                  <ChatBubbleMessage variant="sent">{entry.question}</ChatBubbleMessage>
                 </ChatBubble>
               </div>
               <div className="flex justify-start">
                 <ChatBubble variant="received">
-                  <ChatBubbleMessage variant="received">
+                  <ChatBubbleMessage
+                    variant="received"
+                    className="max-w-[90%]" // Set max width to 75%
+                  >
                     <CustomMarkdown content={cleanUpText(entry.answer)} />
                   </ChatBubbleMessage>
                 </ChatBubble>
@@ -91,14 +93,15 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
           ))
         )}
       </ChatMessageList>
+      <FollowUpQuestions userId={userId} onQuestionClick={handleQueryClick} loading={loading} />
       <form onSubmit={handleSubmit}>
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Hit :tab and ask away about Charles' resume..."
+          placeholder="Ask a question about Charles..."
           required
           disabled={loading}
-          className="w-full"
+          className="w-full h-16 text-lg border-none shadow-md focus:ring-2 focus:ring-blue-500 mb-5" // Increased height and added shadow
         />
         <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Generating Answer...' : 'Ask'}
