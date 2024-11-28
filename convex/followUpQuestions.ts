@@ -56,7 +56,7 @@ export const generateFollowUps = action({
         }
       ],
       temperature: 0.3, // Reduced for more focused outputs
-      max_tokens: 50, // Reduced since we want shorter questions
+      max_tokens: 80, // Reduced since we want shorter questions
     });
 
     if (!response.choices[0].message.content) {

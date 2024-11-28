@@ -31,14 +31,12 @@ function App() {
   console.log("Session ID is ", { sessionId })
 
   return (
-    <div className="flex items-center justify-center bg-gray-100">
+    <div>
       <Unauthenticated>
           <LandingPage />
       </Unauthenticated>
       <Authenticated>
-        <div className="w-full p-6 bg-transparent rounded-lg mb-4">
           {sessionId && userId && <Chat sessionId={sessionId} userId={userId} />}
-        </div>
         <div className="absolute top-4 right-4">
           <SignOut />
         </div>
