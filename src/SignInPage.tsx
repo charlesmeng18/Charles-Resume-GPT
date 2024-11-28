@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 export function SignInPage() {
   return (
-    <Card className="shadow-xl">
+    <Card className="shadow-xl w-full max-w-2xl overflow-visible">
       <CardContent className="p-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">
