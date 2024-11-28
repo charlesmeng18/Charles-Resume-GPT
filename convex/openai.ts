@@ -26,9 +26,9 @@ export const generateAnswer = action({
       userId: args.userId
     });
 
-    // Fetch the most relevant chunks for generation
-    const results = await ctx.runAction(api.search.chunkEmbeddingsRetriever, {
-      question: rewrittenQuery // retrieve using the question
+    // Fetch the most relevant chunks using hybridSearch
+    const results = await ctx.runAction(api.search.hybridSearch, {
+      query: rewrittenQuery // retrieve using the rewritten query
     });
     const stringResults : string = JSON.stringify(results);
 

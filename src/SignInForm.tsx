@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react';
 import { useAuthActions } from '@convex-dev/auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {Alert} from '@/components/ui/alert';
+import { Alert } from '@/components/ui/alert';
 import { useMutation } from 'convex/react';
 import { api } from '../convex/_generated/api';
 
@@ -12,7 +12,6 @@ export function SignInForm() {
   const [confirmation, setConfirmation] = useState('');
   const [error, setError] = useState('');
 
-  // Initialize the mutation for checking allowlist status
   const checkAllowlistStatus = useMutation(api.allowlist.checkAllowlistStatus);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -25,22 +24,17 @@ export function SignInForm() {
     const email = formData.get('email') as string;
 
     try {
-      // Check if the email is allowlisted
       const isAllowlisted = await checkAllowlistStatus({ email: email });
 
       if (!isAllowlisted) {
-        console.log(`${email} is not allowlisted`); 
         setError(`${email} is not authorized to access this application. Please reach out to Charles to request allowlist access.`);
         setLoading(false);
         return;
       }
 
-      // Proceed with sign-in if allowlisted
-      console.log(`${email} is allowlisted!`); 
       await signIn('resend', formData);
       setConfirmation('Allowlist access confirmed! Magic link has been sent to your email - use the link to log in.');
     } catch (err) {
-      console.error(err);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -48,9 +42,9 @@ export function SignInForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 border rounded-lg shadow-md">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <label htmlFor="email" className="block text-m font-medium text-black-700">
+    <div className="max-w-lg mx-auto p-6 border rounded-lg shadow-lg bg-white">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <label htmlFor="email" className="block text-lg font-semibold text-gray-800">
           Enter your email here:
         </label>
         <Input
@@ -59,9 +53,9 @@ export function SignInForm() {
           type="email"
           required
           disabled={loading}
-          className="w-full"
+          className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button type="submit" disabled={loading} className="w-full bg-blue-600 text-white rounded-lg p-3 hover:bg-blue-700 transition duration-200">
           {loading ? 'Sending...' : 'Sign In with Magic Link'}
         </Button>
       </form>
@@ -70,7 +64,7 @@ export function SignInForm() {
           {confirmation}
         </Alert>
       )}
-        {error && (
+      {error && (
         <Alert className="mt-4" variant="default">
           {error}
         </Alert>

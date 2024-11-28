@@ -36,7 +36,7 @@ function App() {
           <LandingPage />
       </Unauthenticated>
       <Authenticated>
-        <div className="w-full max-w-6xl p-6 bg-transparent rounded-lg mb-4">
+        <div className="w-full p-6 bg-transparent rounded-lg mb-4">
           {sessionId && userId && <Chat sessionId={sessionId} userId={userId} />}
         </div>
         <div className="absolute top-4 right-4">

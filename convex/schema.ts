@@ -47,6 +47,8 @@ export default defineSchema({
   .vectorIndex("byEmbedding", {
     vectorField: "embedding",
     dimensions: 1536,
+  }).searchIndex("text", {
+    searchField: "text"
   }),
   allowlist: defineTable({
     email: v.string(),
