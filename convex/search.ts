@@ -85,7 +85,7 @@ export const rerankAction = internalAction({
             model: 'rerank-english-v3.0',
             query: args.query,
             documents: args.documents.map(doc => doc.text),
-            topN: 10,
+            topN: 10, // return top 10 results
         });
 
         const rerankedResults = response.results.map((rank) => ({

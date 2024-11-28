@@ -39,26 +39,24 @@ export const generateFollowUps = action({
       messages: [
         {
           role: "system",
-          content: `Generate 2 complete, natural follow-up questions based on the user's current question and the chat history. 
-            Prioritize questions about these key topics: ${winningTopics}.
-            Here are principles you are expected to follow:
-            The follow-up questions should be very concise. Short sentences only, such as: 
-                "What does Moveworks do?" 
-                "What are Charles' best skills?"
-                "What are Charles' key challenges overcome"
-            Return only the questions, separated by |.
-            Questions should build on previous context but also explore new relevant areas.`
+          content: `Generate 2 brief follow-up questions about Charles Meng's background.
+            Focus areas: ${winningTopics}
+            
+            Format: Return exactly 2 questions separated by |
+            Example: "What was your role at Apple?" | "How did you improve search at Moveworks?"
+            
+            Keep questions under 10 words each.
+            Build on chat context but explore new angles.`
         },
         {
           role: "user",
-          content: `Current question: ${currentQuestion}
-            Current answer: ${currentAnswer}
-            Recent chat history: ${JSON.stringify(chatHistory.slice(-3))}
-            Generate 2 follow-up questions.`
+          content: `Previous Q: ${currentQuestion}
+            Answer: ${currentAnswer}
+            History: ${JSON.stringify(chatHistory.slice(-3))}`
         }
       ],
-      temperature: 0.5,
-      max_tokens: 75,
+      temperature: 0.3, // Reduced for more focused outputs
+      max_tokens: 50, // Reduced since we want shorter questions
     });
 
     if (!response.choices[0].message.content) {

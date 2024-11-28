@@ -35,13 +35,13 @@ export const generateAnswer = action({
 
     // Create a prompt for the LLM
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini", // Use "gpt-4" if you have access
+      model: "gpt-4o-mini",
       messages: [
         {
           role: 'system',
-          content: `You are an AI assistant that provides accurate, concise answers about Charles Meng's professional background. 
-            Focus on answering the user's question using only the provided source material.
-            Sparingly use some headers and bullet points to structure your response.`,
+          content: `You are a concise AI assistant focused on Charles Meng's professional background. 
+            Provide brief, direct answers using only the provided source material.
+            Limit responses to 1-2 short paragraphs.`,
         },
         {
           role: 'user',
@@ -49,10 +49,14 @@ export const generateAnswer = action({
         },
         {
           role: 'system',
-          content: `To answer the previous user's  question ${rewrittenQuery}, you can use these results: ${stringResults}. If the results do not answer the user's question, gracefully bow out.
-          Do not make up information not provided in the sources.  
-          Be succinct, your answer should be no more than a few concise paragraphs. 
-          Cite your sources.`,
+          content: `Context for answering: ${stringResults}
+
+          Guidelines:
+          - If the context doesn't answer the question, simply state that you don't have enough information
+          - Keep your response under 300 words
+          - Only use information from the provided context
+          - If helpful, output your response in markdown and line breaks for readability
+          - End with a brief source reference to a summary of the chunk that most helped answer the question`,
         },
       ], 
       temperature: 0,
