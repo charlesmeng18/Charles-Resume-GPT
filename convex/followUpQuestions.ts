@@ -45,8 +45,8 @@ export const generateFollowUps = action({
             Format: Return exactly 2 questions separated by |
             Example: "What was your role at Apple?" | "How did you improve search at Moveworks?"
             
-            Keep questions under 10 words each.
-            Build on chat context but explore new angles.`
+            Keep the follow-up questions short, to under 20-30 words each.
+            Build on chat context but explore new angles, particularly about his experiences at Moveworks and Enterprise Search as a Product Manager, experience at Apple, and domain expertiser with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation).`
         },
         {
           role: "user",

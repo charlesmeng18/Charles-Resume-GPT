@@ -184,7 +184,13 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
         )}
       </ChatMessageList>
       {renderLoadingIndicator()}
-      <FollowUpQuestions userId={userId} onQuestionClick={handleQueryClick} loading={loading} />
+      <div className="w-full mb-4">
+        <FollowUpQuestions 
+          userId={userId} 
+          onQuestionClick={handleQueryClick} 
+          loading={loading} 
+        />
+      </div>
       <form onSubmit={handleSubmit}>
         <Input
           value={question}

@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 export const SAMPLE_QUERIES = [
-  "Overview of Charles' Resume",
   "What's Charles' experience with building Search and GenAI products",
-  "Tell me about Charles' strengths as a Product Manager",
+  "Overview of Charles' Resume",
+  "Tell me about Charles' strengths and biggest projects led, as a Product Manager",
   "What is Charles' educational background?",
 ] as const;
 
