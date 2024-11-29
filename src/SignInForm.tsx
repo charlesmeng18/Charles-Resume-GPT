@@ -11,8 +11,10 @@ export function SignInForm() {
   const [loading, setLoading] = useState(false);
   const [confirmation, setConfirmation] = useState('');
   const [error, setError] = useState('');
+  const [requestSent, setRequestSent] = useState(false);
 
   const checkAllowlistStatus = useMutation(api.allowlist.checkAllowlistStatus);
+  const addToAllowlist = useMutation(api.allowlist.addToAllowlist);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,17 +29,36 @@ export function SignInForm() {
       const isAllowlisted = await checkAllowlistStatus({ email: email });
 
       if (!isAllowlisted) {
-        setError(`${email} is not authorized to access this application. Please reach out to Charles to request allowlist access.`);
+        setError('Your email is not authorized to access this application. Please request allowlist access below.');
         setLoading(false);
         return;
       }
 
       await signIn('resend', formData);
-      setConfirmation('Allowlist access confirmed! Magic link has been sent to your email - use the link to log in.');
+      setConfirmation('Allowlist Confirmed! Magic link has been sent to your email - please use the link to log in.');
     } catch (err) {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRequestAccess = async (email: string) => {
+    if (!email) {
+      setError('Please enter an email address first.');
+      return;
+    }
+    
+    try {
+      await addToAllowlist({ email, isAllowed: false });
+      setRequestSent(true);
+      setError('Your access request has been submitted. You will be notified when access is granted.');
+    } catch (err: any) {
+      if (err.message?.includes('already in the allowlist')) {
+        setError('Your request is already pending. Please wait for approval.');
+      } else {
+        setError('Failed to submit access request. Please try again.');
+      }
     }
   };
 
@@ -65,9 +86,21 @@ export function SignInForm() {
         </Alert>
       )}
       {error && (
-        <Alert className="mt-4" variant="default">
-          {error}
-        </Alert>
+        <div className="space-y-4 mt-4">
+          <Alert variant="default">
+            {error}
+          </Alert>
+          {!requestSent && (
+            <Button 
+              onClick={() => handleRequestAccess(
+                (document.querySelector('input[name="email"]') as HTMLInputElement)?.value
+              )}
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+            >
+              Request Allowlist Access
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );
