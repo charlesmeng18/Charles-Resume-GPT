@@ -22,6 +22,12 @@ import {
         ],
       },
       {
+        title: "Serverless Backend",
+        description:
+          "Built with Convex.dev. Lightning-fast, production-ready backend that scales effortlessly! All with real-time capabilities, E2E typesafety, and built-in authentication",
+        badges: ["Convex.dev Backend-as-a-Service", "Convex Auth"],
+      },
+      {
         title: "Data Processing and Search Infra",
         description:
           "Processes and indexes content using LlamaParse and LlamaIndex, and stored in a Convex database",
@@ -35,13 +41,7 @@ import {
         description:
           "Built with React and styled with ShadcnUI for a responsive user experience",
         badges: ["React", "TypeScript", "ShadcnUI", "TailwindCSS"],
-      },
-      {
-        title: "Serverless Backend",
-        description:
-          "Built with Convex.dev, with serverless backend, with real-time capabilities and built-in authentication",
-        badges: ["Convex Backend", "Convex Auth"],
-      },
+      }
     ];
   
     return (
