@@ -14,9 +14,9 @@ export function LandingPage() {
           
           {/* Demo section */}
           <div className="w-full">
-            <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
+            <div className="rounded-lg overflow-hidden shadow-lg">
               <video 
-                className="w-full h-full object-cover"
+                className="w-full h-auto object-contain"
                 controls
                 muted
               >
