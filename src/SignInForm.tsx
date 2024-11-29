@@ -52,7 +52,7 @@ export function SignInForm() {
     try {
       await addToAllowlist({ email, isAllowed: false });
       setRequestSent(true);
-      setError('Your access request has been submitted. You will be notified when access is granted.');
+      setError('Your access request has been submitted. Charles will review your request and get back to you shortly.');
     } catch (err: any) {
       if (err.message?.includes('already in the allowlist')) {
         setError('Your request is already pending. Please wait for approval.');
