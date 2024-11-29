@@ -47,7 +47,7 @@ export const chunkEmbeddingsRetriever = internalAction({
         const embedding = await generateQueryEmbedding(args.question);
         const results = await ctx.vectorSearch("chunks", "byEmbedding", {
             vector: embedding,
-            limit: 50
+            limit: 25
         });
         // fetch the document data for each result
         const chunks : Array<Doc<"chunks">> = await ctx.runQuery(
@@ -97,24 +97,75 @@ export const rerankAction = internalAction({
       }
     }
   )
-  export const hybridSearch = action({
+
+// Add this new function for keyword search
+export const keywordRetriever = internalQuery({
+    args: { query: v.string() },
+    handler: async (ctx, args) => {
+        // Use Convex's built-in search functionality
+        const searchResults = await ctx.db
+            .query("chunks")
+            .withSearchIndex("text", q => 
+                q.search("text", args.query)
+            )
+            .take(25);
+
+        const mappedResults = searchResults.map(doc => ({
+            text: doc.text,
+            id: doc._id,
+            score: 1 - (searchResults.indexOf(doc) / searchResults.length)
+        }));
+        
+        console.log("Keyword search results:", mappedResults);
+        return mappedResults;
+    }
+});
+
+// Update the hybridSearch function
+export const hybridSearch = action({
     args: {
         query: v.string()
     },
-    async handler(ctx, args) {
-        // Get vector search results
-        const vectorResults = await ctx.runAction(internal.search.chunkEmbeddingsRetriever, {
-            question: args.query
+    async handler(ctx, args): Promise<Array<{
+        text: string;
+        id: Id<"chunks">;
+        score: number;
+    }>> {
+        const [vectorResults, keywordResults]: [Array<{
+            text: string;
+            id: Id<"chunks">;
+            score: number;
+        }>, Array<{
+            text: string;
+            id: Id<"chunks">;
+            score: number;
+        }>] = await Promise.all([
+            ctx.runAction(internal.search.chunkEmbeddingsRetriever, {
+                question: args.query
+            }),
+            ctx.runQuery(internal.search.keywordRetriever, {
+                query: args.query
+            })
+        ]);
+
+        // log the number of results from each search
+        console.log("Vector search results:", vectorResults.length);
+        console.log("Keyword search results:", keywordResults.length);
+
+        // Combine results, removing duplicates by ID
+        const seenIds = new Set();
+        const combinedResults = [...vectorResults, ...keywordResults].filter(result => {
+            if (seenIds.has(result.id.toString())) {
+                return false;
+            }
+            seenIds.add(result.id.toString());
+            return true;
         });
 
-        // TODO: Add your keyword search here and combine results
-        // const keywordResults = await ...
-        // const combinedResults = combineResults(vectorResults, keywordResults);
-
         // Rerank the combined results
-        const rerankedResults: Array<{ text: string; id: Id<"chunks">; score: number }> = await ctx.runAction(internal.search.rerankAction, {
+        const rerankedResults = await ctx.runAction(internal.search.rerankAction, {
             query: args.query,
-            documents: vectorResults // or combinedResults once implemented
+            documents: combinedResults
         });
 
         return rerankedResults;
