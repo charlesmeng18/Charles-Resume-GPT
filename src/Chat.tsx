@@ -146,7 +146,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
   };
 
   return (
-    <div>
+    <div className="bg-orange-50">
       <ChatMessageList>
         {getChatHistory.length === 0 && optimisticMessages.length === 0 ? (
           <WelcomeSection onQueryClick={handleQueryClick} loading={loading} />
@@ -187,13 +187,15 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
         )}
       </ChatMessageList>
       {renderLoadingIndicator()}
-      <div className="w-full mb-4 ml-6">
-        <FollowUpQuestions 
-          userId={userId} 
-          onQuestionClick={handleQueryClick} 
-          loading={loading} 
-        />
-      </div>
+      {!loading && (
+        <div className="w-full mb-4 ml-6">
+          <FollowUpQuestions 
+            userId={userId} 
+            onQuestionClick={handleQueryClick} 
+            loading={loading} 
+          />
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="ml-6 mb-12 mr-6">
         <Input
           value={question}

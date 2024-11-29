@@ -43,7 +43,9 @@ export const generateFollowUps = action({
             Example: "What was Charles' role at Apple?" | "How did Charles lead Enterprise Search at Moveworks?"
             
             Keep the follow-up questions short, to under 20-30 words each.
-            Build on chat context but explore new angles, particularly about his experiences at Moveworks and Enterprise Search as a Product Manager, experience at Apple, and domain expertiser with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation).`
+            Build on chat context but explore new angles, particularly about his experiences at Moveworks and Enterprise Search as a Product Manager, experience at Apple, and domain expertiser with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation).
+            
+            Generate the questions in a friendly tone, like a friend asking another friend about their resume.`
         },
         {
           role: "user",
