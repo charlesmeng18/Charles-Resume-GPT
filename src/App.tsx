@@ -36,10 +36,14 @@ function App() {
         <LandingPage />
       </Unauthenticated>
       <Authenticated>
-        {sessionId && userId && <Chat sessionId={sessionId} userId={userId} />}
-        <div className="absolute top-4 right-4">
-          <SignOut />
-        </div>
+        {sessionId && userId && (
+          <div className="mb-16">
+            <div className="flex justify-end mb-4">
+              <SignOut />
+            </div>
+            <Chat sessionId={sessionId} userId={userId} />
+          </div>
+        )}
       </Authenticated>
     </div>
   );

@@ -196,7 +196,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
           />
         </div>
       )}
-      <form onSubmit={handleSubmit} className="ml-6 mb-12 mr-6">
+      <form onSubmit={handleSubmit} className="ml-6 mb-12 mr-6 bg-orange-50">
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
@@ -205,9 +205,6 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
           disabled={loading}
           className="w-full h-16 text-lg bg-white border-none shadow-md focus:ring-2 focus:ring-blue-500 mb-5"
         />
-        {/* <Button type="submit" disabled={loading} className="w-1/10">
-          {loading ? 'Generating Answer...' : 'Ask'}
-        </Button> */}
       </form>
     </div>
   );
