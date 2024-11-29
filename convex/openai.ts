@@ -41,7 +41,7 @@ export const generateAnswer = action({
           role: 'system',
           content: `You are a concise AI assistant focused on Charles Meng's professional background. 
             Provide brief, direct answers using only the provided source material, focused on answering the user's question.
-            Limit responses to 1-2 short paragraphs.`,
+            Speak simply, without fluff or too formally. Limit responses to 1-2 short paragraphs.`,
         },
         {
           role: 'user',

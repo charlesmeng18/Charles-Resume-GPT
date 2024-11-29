@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useAction } from 'convex/react';
 import { api } from '../convex/_generated/api';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChatBubble, ChatBubbleMessage } from '@/components/ui/chat/chat-bubble';
 import { ChatMessageList } from '@/components/ui/chat/chat-message-list';
@@ -17,6 +16,10 @@ type LoadingStep = {
 
 const RAG_STEPS: LoadingStep[] = [
   { 
+    step: "Rewriting query", 
+    description: "Optimizing the query for better search results..." 
+  },
+  { 
     step: "Retrieving", 
     description: "Finding relevant documents using embedding search..." 
   },
@@ -29,7 +32,7 @@ const RAG_STEPS: LoadingStep[] = [
     description: "Generating a comprehensive answer from the sources..." 
   },
   { 
-    step: "Preparing", 
+    step: "Preparing presentation", 
     description: "Formatting the response for a clear presentation..." 
   }
 ];
@@ -61,7 +64,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
   const startLoadingCarousel = () => {
     const interval = setInterval(() => {
       setCurrentLoadingStep((prev) => (prev + 1) % RAG_STEPS.length);
-    }, 2000); // Change step every 2 seconds
+    }, 4000); // Change step every 2 seconds
     setLoadingStepInterval(interval);
   };
 
@@ -129,14 +132,14 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
     const currentStep = RAG_STEPS[currentLoadingStep];
     return (
       <div className="mb-4 relative overflow-hidden">
-        <div className="p-4 bg-gradient-to-r from-blue-500/10 via-blue-500/5 to-blue-500/10 rounded-lg backdrop-blur-sm 
+        <div className="p-4 bg-gradient-to-r from-blue-200/10 via-blue-200/5 to-blue-200/10 rounded-lg backdrop-blur-sm 
                         before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] 
                         before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent">
           <div className="flex items-center space-x-3">
-            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-500 border-t-transparent"></div>
-            <div className="font-medium text-blue-900">{currentStep.step}</div>
+            <div className="animate-spin rounded-full h-5 w-5 border-2 border-blue-200 border-t-transparent"></div>
+            <div className="font-medium text-gray-800">{currentStep.step}</div>
           </div>
-          <p className="text-sm text-blue-800/80 mt-2 ml-8">{currentStep.description}</p>
+          <p className="text-sm text-gray-600 mt-2 ml-6">{currentStep.description}</p>
         </div>
       </div>
     );
@@ -184,14 +187,14 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
         )}
       </ChatMessageList>
       {renderLoadingIndicator()}
-      <div className="w-full mb-4">
+      <div className="w-full mb-4 ml-6">
         <FollowUpQuestions 
           userId={userId} 
           onQuestionClick={handleQueryClick} 
           loading={loading} 
         />
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="ml-6 mb-12 mr-6">
         <Input
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
@@ -200,9 +203,9 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
           disabled={loading}
           className="w-full h-16 text-lg border-none shadow-md focus:ring-2 focus:ring-blue-500 mb-5" // Increased height and added shadow
         />
-        <Button type="submit" disabled={loading} className="w-full">
+        {/* <Button type="submit" disabled={loading} className="w-1/10">
           {loading ? 'Generating Answer...' : 'Ask'}
-        </Button>
+        </Button> */}
       </form>
     </div>
   );
