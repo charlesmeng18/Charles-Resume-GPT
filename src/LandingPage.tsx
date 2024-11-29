@@ -1,13 +1,33 @@
 import { SignInPage } from "./SignInPage";
-import { TechStackSection } from "./TechStack"; // Adjust the path if necessary
+import { TechStackSection } from "./TechStack";
 
 export function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero section with SignInPage */}
-      <div className="flex-1 flex items-center justify-center px-4 pb-16">
-        <div className="w-full max-w-lg mt-16 md:mt-24 lg:mt-32">
-          <SignInPage />
+    <div className="flex flex-col min-h-screen bg-orange-50">
+      {/* Hero section with SignIn and Demo side by side */}
+      <div className="flex-1 flex items-center justify-center px-4 py-16">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          {/* SignIn section */}
+          <div className="w-full max-w-lg mx-auto lg:mx-0">
+            <SignInPage />
+          </div>
+          
+          {/* Demo section */}
+          <div className="w-full">
+            <div className="aspect-video rounded-lg overflow-hidden shadow-lg">
+              <video 
+                className="w-full h-full object-cover"
+                controls
+                muted
+              >
+                <source src="/demo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <p className="text-sm text-gray-500 text-center mt-2">
+              Watch a quick demo of the Chat Assistant in action
+            </p>
+          </div>
         </div>
       </div>
 

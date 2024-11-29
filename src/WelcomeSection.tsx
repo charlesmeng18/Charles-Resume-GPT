@@ -2,10 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
 export const SAMPLE_QUERIES = [
-  "What's Charles' experience with building Search and GenAI products",
-  "Overview of Charles' Resume",
-  "Tell me about Charles' strengths and biggest projects led, as a Product Manager",
-  "What is Charles' educational background?",
+  "What's Charles' experience with building Search and GenAI products?",
+  "Give me an overview of Charles' Resume and educational background",
+  "Tell me about Charles' biggest projects led as a Product Manager"
 ] as const;
 
 interface WelcomeSectionProps {

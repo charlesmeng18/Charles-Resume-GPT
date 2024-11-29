@@ -66,7 +66,7 @@ export function SignInForm() {
     <div className="max-w-lg mx-auto p-6 border rounded-lg shadow-lg bg-white">
       <form onSubmit={handleSubmit} className="space-y-6">
         <label htmlFor="email" className="block text-lg font-semibold text-gray-800">
-          Enter your email here:
+          Enter your email here to chat:
         </label>
         <Input
           name="email"

@@ -25,13 +25,10 @@ export const generateFollowUps = action({
     const currentAnswer = lastEntry.answer; // Adjust based on your data structure
 
     const winningTopics = `
-    - Apple: If questions about Apple: 
-        - Expertise with data intensive applications, data analysis at scale, search, 0-1, general Product Management experience 
-        - General Product Management at scale and big tech
-    - Moveworks: If questions about Moveworks:
-        - 0 to 1 Product experience
         - Expertise with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation)
-    `
+        - General Product Management at scale and big tech
+        - 0 to 1 Product experience
+        - Expertise with data intensive applications, data analysis at scale, search, 0-1, general Product Management experience     `
       ;
 
     const response = await openai.chat.completions.create({
@@ -43,7 +40,7 @@ export const generateFollowUps = action({
             Focus areas: ${winningTopics}
             
             Format: Return exactly 2 questions separated by |
-            Example: "What was your role at Apple?" | "How did you improve search at Moveworks?"
+            Example: "What was Charles' role at Apple?" | "How did Charles lead Enterprise Search at Moveworks?"
             
             Keep the follow-up questions short, to under 20-30 words each.
             Build on chat context but explore new angles, particularly about his experiences at Moveworks and Enterprise Search as a Product Manager, experience at Apple, and domain expertiser with Search Relevance, LLMs, and RAG (Retrieval Augmented Generation).`
