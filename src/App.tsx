@@ -31,12 +31,12 @@ function App() {
   console.log("Session ID is ", { sessionId })
 
   return (
-    <div>
+    <div className="min-h-screen bg-orange-50">
       <Unauthenticated>
-          <LandingPage />
+        <LandingPage />
       </Unauthenticated>
       <Authenticated>
-          {sessionId && userId && <Chat sessionId={sessionId} userId={userId} />}
+        {sessionId && userId && <Chat sessionId={sessionId} userId={userId} />}
         <div className="absolute top-4 right-4">
           <SignOut />
         </div>

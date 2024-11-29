@@ -203,7 +203,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
           placeholder="Ask a question about Charles..."
           required
           disabled={loading}
-          className="w-full h-16 text-lg border-none shadow-md focus:ring-2 focus:ring-blue-500 mb-5" // Increased height and added shadow
+          className="w-full h-16 text-lg bg-white border-none shadow-md focus:ring-2 focus:ring-blue-500 mb-5"
         />
         {/* <Button type="submit" disabled={loading} className="w-1/10">
           {loading ? 'Generating Answer...' : 'Ask'}
