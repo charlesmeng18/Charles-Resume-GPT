@@ -3,18 +3,18 @@ import { useAuthActions } from '@convex-dev/auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert } from '@/components/ui/alert';
-import { useMutation } from 'convex/react';
-import { api } from '../convex/_generated/api';
+// import { useMutation } from 'convex/react';
+// import { api } from '../convex/_generated/api';
 
 export function SignInForm() {
   const { signIn } = useAuthActions();
   const [loading, setLoading] = useState(false);
   const [confirmation, setConfirmation] = useState('');
   const [error, setError] = useState('');
-  const [requestSent, setRequestSent] = useState(false);
+  // const [requestSent, setRequestSent] = useState(false);
 
-  const checkAllowlistStatus = useMutation(api.allowlist.checkAllowlistStatus);
-  const addToAllowlist = useMutation(api.allowlist.addToAllowlist);
+  // const checkAllowlistStatus = useMutation(api.allowlist.checkAllowlistStatus);
+  // const addToAllowlist = useMutation(api.allowlist.addToAllowlist);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,19 +23,11 @@ export function SignInForm() {
     setError('');
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get('email') as string;
+    // const email = formData.get('email') as string;
 
     try {
-      const isAllowlisted = await checkAllowlistStatus({ email: email });
-
-      if (!isAllowlisted) {
-        setError('Your email is not authorized to access this application. Please request allowlist access below.');
-        setLoading(false);
-        return;
-      }
-
       await signIn('resend', formData);
-      setConfirmation('Allowlist Confirmed! Magic link has been sent to your email - please use the link to log in.');
+      setConfirmation('Magic link has been sent to your email - please use the link to log in.');
     } catch (err) {
       setError('An error occurred. Please try again.');
     } finally {
@@ -43,6 +35,7 @@ export function SignInForm() {
     }
   };
 
+  /* Commented out for future use
   const handleRequestAccess = async (email: string) => {
     if (!email) {
       setError('Please enter an email address first.');
@@ -61,6 +54,7 @@ export function SignInForm() {
       }
     }
   };
+  */
 
   return (
     <div className="max-w-lg mx-auto p-6 border rounded-lg shadow-lg bg-white">
@@ -86,21 +80,9 @@ export function SignInForm() {
         </Alert>
       )}
       {error && (
-        <div className="space-y-4 mt-4">
-          <Alert variant="default">
-            {error}
-          </Alert>
-          {!requestSent && (
-            <Button 
-              onClick={() => handleRequestAccess(
-                (document.querySelector('input[name="email"]') as HTMLInputElement)?.value
-              )}
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
-            >
-              Request Allowlist Access
-            </Button>
-          )}
-        </div>
+        <Alert variant="default">
+          {error}
+        </Alert>
       )}
     </div>
   );
