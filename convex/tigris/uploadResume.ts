@@ -2,7 +2,7 @@ import { Buffer } from 'buffer';
 import { action } from "../_generated/server"; // change from mutation to action
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-export const uploadResume = action(async (ctx, args: {
+export const uploadResume = action(async (_ctx, args: {
   fileName: string,
   fileContent: string,
   fileType: string,
