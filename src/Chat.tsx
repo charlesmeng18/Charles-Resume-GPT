@@ -8,6 +8,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { WelcomeSection } from './WelcomeSection';
 import { FollowUpQuestions } from './FollowUpQuestions';
+import { Button } from '@/components/ui/button';
+import { ResumeUploadDialog } from './ResumeUploadDialog';
 
 type LoadingStep = {
   step: string;
@@ -43,6 +45,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
   const [currentLoadingStep, setCurrentLoadingStep] = useState<number>(0);
   const [loadingStepInterval, setLoadingStepInterval] = useState<NodeJS.Timeout | null>(null);
   const [optimisticMessages, setOptimisticMessages] = useState<Array<{ question: string, timestamp: number }>>([]);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
 
   // Fetch the chat history using useQuery
   const getChatHistory = useQuery(api.chatHistory.getChatHistory, { userId });
@@ -146,7 +149,7 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
   };
 
   return (
-    <div className="bg-orange-50">
+    <div className="bg-orange-50 relative">
       <ChatMessageList>
         {getChatHistory.length === 0 && optimisticMessages.length === 0 ? (
           <WelcomeSection onQueryClick={handleQueryClick} loading={loading} />
@@ -206,6 +209,20 @@ export function Chat({ sessionId, userId }: { sessionId: string, userId: string 
           className="w-full h-16 text-lg bg-white border-none shadow-md focus:ring-2 focus:ring-blue-500 mb-5"
         />
       </form>
+
+      <div className="fixed bottom-8 left-8">
+        <Button 
+          onClick={() => setShowUploadDialog(true)}
+          className="bg-violet-600 hover:bg-violet-700 text-white rounded-full shadow-lg"
+        >
+          📄 Upload Job Description You're Recruiting For
+        </Button>
+      </div>
+
+      <ResumeUploadDialog 
+        open={showUploadDialog} 
+        onOpenChange={setShowUploadDialog}
+      />
     </div>
   );
 }

@@ -24,6 +24,7 @@ import type * as queryRewrite from "../queryRewrite.js";
 import type * as search from "../search.js";
 import type * as session from "../session.js";
 import type * as tasks from "../tasks.js";
+import type * as tigris_uploadResume from "../tigris/uploadResume.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -45,6 +46,7 @@ declare const fullApi: ApiFromModules<{
   search: typeof search;
   session: typeof session;
   tasks: typeof tasks;
+  "tigris/uploadResume": typeof tigris_uploadResume;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
